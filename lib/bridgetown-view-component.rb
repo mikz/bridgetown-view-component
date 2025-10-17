@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 require "bridgetown-core"
-require "action_view"
-require "view_component"
+require 'action_view'
 
-# Create basic Rails namespace when in Bridgetown-only context
+# Remove this when https://github.com/ViewComponent/view_component/pull/2462 is merged and released.
 unless defined?(Rails)
   module Rails
-    module UrlHelpers; end
-
     def self.version
       ActionView.version.to_s
     end
@@ -19,21 +16,16 @@ unless defined?(Rails)
     end
 
     def self.application
-      @application ||= HashWithDotAccess::Hash.new({
-        routes: { url_helpers: UrlHelpers },
-      })
+      nil
     end
 
     def self.env
-      @env ||= HashWithDotAccess::Hash.new({ production?: Bridgetown.env.production? })
+      @env ||= Bridgetown.environment
     end
   end
-
-  unless Rails.version.to_f >= 6.1
-    require "view_component/render_monkey_patch"
-    ActionView::Base.prepend ViewComponent::RenderMonkeyPatch
-  end
 end
+
+require "view_component"
 
 # Load classes/modules
 
@@ -58,6 +50,10 @@ Bridgetown.initializer :"bridgetown-view-component" do |config|
     klass.class_eval do
       def lookup_context
         HashWithDotAccess::Hash.new(variants: [])
+      end
+
+      def output_buffer
+        ActionView::OutputBuffer.new
       end
 
       def view_renderer

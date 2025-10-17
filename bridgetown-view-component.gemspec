@@ -15,11 +15,13 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r!^spec/!)
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = ">= 2.7.0"
+  spec.required_ruby_version = ">= 3.2.0" # Matches  view_component 4.0
 
-  spec.add_dependency "bridgetown", ">= 1.2.0.beta5", "< 2.0"
-  spec.add_dependency "view_component", ">= 2.49"
-  spec.add_dependency "actionview", ">= 6.0"
+  spec.add_dependency "bridgetown", ">= 2.0", "< 3.0"
+  spec.add_dependency "view_component", ">= 4.0"
+  # TODO: remove this dependency on actionview once view_component
+  # has this dependency explicitly declared and releases new version: https://github.com/ViewComponent/view_component/pull/2461
+  spec.add_dependency "actionview", [">= 7.1.0", "< 8.1"] # Matches view_component 4.0
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "nokogiri", "~> 1.6"
