@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "bridgetown-core"
-require 'action_view'
+require "action_view"
 
 # Remove this when https://github.com/ViewComponent/view_component/pull/2462 is merged and released.
 unless defined?(Rails)
